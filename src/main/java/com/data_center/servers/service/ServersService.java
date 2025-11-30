@@ -1,12 +1,21 @@
 package com.data_center.servers.service;
 
+import java.util.Locale;
 import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.data_center.servers.model.Servers;
 
 @Service
 public class ServersService {
+
+    @Autowired
+    @Qualifier("messageSource")
+    MessageSource messages;
 
     // GET - получение данных о сервере
     public Servers getServer(String datacenterName, String serverName) {
@@ -26,19 +35,20 @@ public class ServersService {
     }
 
     // POST - создание нового сервера
-    public String createServer(Servers server, String datacenterName) {
+    public String createServer(Servers server, String datacenterName, Locale locale) {
+        String responseMessage = null;
         if(server != null) {
-            server.setDatacenterName(datacenterName);  // Устанавливаем из URL
-            return String.format("Server created in datacenter %s: %s",
-                    datacenterName, server.toString());
+            server.setDatacenterName(datacenterName);
+            responseMessage = String.format(messages.getMessage("servers.create.message", null,locale),
+                    server.toString());
         }
-        return "Failed to create server";
+        return responseMessage;
     }
 
     // PUT - обновление данных сервера
     public String updateServer(Servers server, String datacenterName) {
         if(server != null) {
-            server.setDatacenterName(datacenterName);  // Устанавливаем из URL
+            server.setDatacenterName(datacenterName);
             return String.format("Server updated in datacenter %s: %s",
                     datacenterName, server.toString());
         }
