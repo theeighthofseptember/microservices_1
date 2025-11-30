@@ -40,6 +40,7 @@ public class ServersService {
         if(server != null) {
             server.setDatacenterName(datacenterName);
             responseMessage = String.format(messages.getMessage("servers.create.message", null,locale),
+                    datacenterName,
                     server.toString());
         }
         return responseMessage;
