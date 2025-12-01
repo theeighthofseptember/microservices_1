@@ -40,25 +40,27 @@ public class ServersService {
         if(server != null) {
             server.setDatacenterName(datacenterName);
             responseMessage = String.format(messages.getMessage("servers.create.message", null,locale),
-                    datacenterName,
                     server.toString());
         }
         return responseMessage;
     }
 
     // PUT - обновление данных сервера
-    public String updateServer(Servers server, String datacenterName) {
+    public String updateServer(Servers server, String datacenterName, Locale locale) {
+        String responseMessage = null;
         if(server != null) {
             server.setDatacenterName(datacenterName);
-            return String.format("Server updated in datacenter %s: %s",
-                    datacenterName, server.toString());
+            responseMessage = String.format(messages.getMessage("servers.update.message", null,locale),
+                    server.toString());
         }
-        return "Failed to update server";
+        return responseMessage;
     }
 
     // DELETE - удаление сервера
-    public String deleteServer(String datacenterName, String serverName) {
-        return String.format("Server %s deleted from datacenter %s",
-                serverName, datacenterName);
+    public String deleteServer(String datacenterName, String serverName, int powerConsumption,  Locale locale) {
+        return String.format(messages.getMessage("servers.delete.message", null, locale),
+                serverName,
+                powerConsumption,
+                datacenterName);
     }
 }

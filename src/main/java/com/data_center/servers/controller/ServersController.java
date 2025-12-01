@@ -37,15 +37,20 @@ public class ServersController {
     @PutMapping
     public ResponseEntity<String> updateServer(
             @PathVariable("datacenterName") String datacenterName,
-            @RequestBody Servers request) {
-        return ResponseEntity.ok(serversService.updateServer(request, datacenterName));
+            @RequestBody Servers request,
+            @RequestHeader(value = "Accept-Language",  required = false)
+            Locale locale) {
+        return ResponseEntity.ok(serversService.updateServer(request, datacenterName, locale));
     }
 
     // DELETE - удалить сервер
-    @DeleteMapping(value="/{serverName}")
+    @DeleteMapping(value="/{serverName}/{powerConsumption}")
     public ResponseEntity<String> deleteServer(
             @PathVariable("datacenterName") String datacenterName,
-            @PathVariable("serverName") String serverName) {
-        return ResponseEntity.ok(serversService.deleteServer(datacenterName, serverName));
+            @PathVariable("serverName") String serverName,
+            @PathVariable("powerConsumption") int powerConsumption,
+            @RequestHeader(value = "Accept-Language",  required = false)
+            Locale locale) {
+        return ResponseEntity.ok(serversService.deleteServer(datacenterName, serverName, powerConsumption, locale));
     }
 }
