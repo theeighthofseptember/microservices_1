@@ -63,4 +63,8 @@ public class ServersService {
                 powerConsumption,
                 datacenterName);
     }
+
+    public String getLinkName(String action, Locale locale) {
+        return messages.getMessage("servers.link." + action, null, locale);
+    }
 }
