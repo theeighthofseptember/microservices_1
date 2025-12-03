@@ -20,18 +20,18 @@ public class ServersController {
     private ServersService serversService;
 
     // GET - получить информацию о сервере
-    @GetMapping(value="/{serverName}/{powerConsumption}")
+    @GetMapping(value="/{serverName}/{maxPowerW}")
     public ResponseEntity<Servers> getServer(
             @PathVariable("datacenterName") String datacenterName,
             @PathVariable("serverName") String serverName,
-            @PathVariable("powerConsumption") int powerConsumption,
+            @PathVariable("maxPowerW") int maxPowerW,
             @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
 
         Servers server = serversService.getServer(datacenterName, serverName);
 
         server.add(
                 linkTo(methodOn(ServersController.class)
-                        .getServer(datacenterName, serverName, powerConsumption, locale))
+                        .getServer(datacenterName, serverName, maxPowerW, locale))
                         .withSelfRel(),
                 linkTo(methodOn(ServersController.class)
                         .createServer(datacenterName, server, locale))
@@ -40,7 +40,7 @@ public class ServersController {
                         .updateServer(datacenterName, server, locale))
                         .withRel(serversService.getLinkName("update", locale)),
                 linkTo(methodOn(ServersController.class)
-                        .deleteServer(datacenterName, serverName, powerConsumption, locale))
+                        .deleteServer(datacenterName, serverName, maxPowerW, locale))
                         .withRel(serversService.getLinkName("delete", locale))
         );
 
@@ -68,14 +68,14 @@ public class ServersController {
     }
 
     // DELETE - удалить сервер
-    @DeleteMapping(value="/{serverName}/{powerConsumption}")
+    @DeleteMapping(value="/{serverName}/{maxPowerW}")
     public ResponseEntity<String> deleteServer(
             @PathVariable("datacenterName") String datacenterName,
             @PathVariable("serverName") String serverName,
-            @PathVariable("powerConsumption") int powerConsumption,
+            @PathVariable("maxPowerW") int maxPowerW,
             @RequestHeader(value = "Accept-Language",  required = false)
             Locale locale) {
-        return ResponseEntity.ok(serversService.deleteServer(datacenterName, serverName, powerConsumption, locale));
+        return ResponseEntity.ok(serversService.deleteServer(datacenterName, serverName, maxPowerW, locale));
     }
 
 }
