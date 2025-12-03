@@ -68,14 +68,14 @@ public class ServersController {
     }
 
     // DELETE - удалить сервер
-    @DeleteMapping(value="/{serverName}/{powerConsumption}")
+    @DeleteMapping(value="/{serverName}/{MaxPowerW}")
     public ResponseEntity<String> deleteServer(
             @PathVariable("datacenterName") String datacenterName,
             @PathVariable("serverName") String serverName,
-            @PathVariable("powerConsumption") int powerConsumption,
+            @PathVariable("MaxPowerW") int MaxPowerW,
             @RequestHeader(value = "Accept-Language",  required = false)
             Locale locale) {
-        return ResponseEntity.ok(serversService.deleteServer(datacenterName, serverName, powerConsumption, locale));
+        return ResponseEntity.ok(serversService.deleteServer(datacenterName, serverName, MaxPowerW, locale));
     }
 
 }
