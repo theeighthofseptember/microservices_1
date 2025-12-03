@@ -37,7 +37,7 @@ public class ServersController {
                         .createServer(datacenterName, server, locale))
                         .withRel(serversService.getLinkName("create", locale)),
                 linkTo(methodOn(ServersController.class)
-                        .updateServer(datacenterName, server, locale))
+                        .updateServer(datacenterName, serverName, server, locale))
                         .withRel(serversService.getLinkName("update", locale)),
                 linkTo(methodOn(ServersController.class)
                         .deleteServer(datacenterName, serverName, maxPowerW, locale))
@@ -58,13 +58,14 @@ public class ServersController {
     }
 
     // PUT - обновить данные сервера
-    @PutMapping
+    @PutMapping(value = ("/{serverName}"))
     public ResponseEntity<String> updateServer(
             @PathVariable("datacenterName") String datacenterName,
+            @PathVariable("serverName") String serverName,
             @RequestBody Servers request,
             @RequestHeader(value = "Accept-Language",  required = false)
             Locale locale) {
-        return ResponseEntity.ok(serversService.updateServer(request, datacenterName, locale));
+        return ResponseEntity.ok(serversService.updateServer(request, datacenterName, serverName, locale));
     }
 
     // DELETE - удалить сервер

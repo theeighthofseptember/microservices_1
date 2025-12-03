@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.BeanUtils;
 
 import com.data_center.servers.model.Servers;
 
@@ -42,11 +43,24 @@ public class ServersService {
     }
 
     // PUT - обновление данных сервера
-    public String updateServer(Servers server, String datacenterName, Locale locale) {
-        server.setDatacenterName(datacenterName);
-        serversRepository.save(server);
+    public String updateServer(Servers server, String datacenterName, String serverName, Locale locale) {
+        // Находим существующий сервер
+        Servers existingServer = serversRepository.findByDatacenterNameAndServerName(datacenterName, serverName);
+
+        if (existingServer == null) {
+            throw new IllegalArgumentException(
+                    String.format(messages.getMessage("servers.search.error.message", null, locale),
+                            serverName, datacenterName));
+        }
+
+        // Копируем все свойства, кроме id, datacenterName и serverName
+        BeanUtils.copyProperties(server, existingServer, "id", "datacenterName", "serverName");
+
+        // Сохраняем (теперь будет UPDATE, т.к. id есть)
+        serversRepository.save(existingServer);
+
         return String.format(messages.getMessage("servers.update.message", null, locale),
-                server.getServerName(), datacenterName);
+                serverName, datacenterName);
     }
 
     // DELETE - удаление сервера
